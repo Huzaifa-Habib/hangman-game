@@ -122,26 +122,18 @@ void gameOverScreen()
 
 void displayGuessedCharacters(char correctWords[], int size)
 {
-    int xCoordinate = 700;
-    char displayString[100];
+    char displayString[size+1]; //we plus 1 to actuall size to implement null character
 
     settextstyle(10, HORIZ_DIR, 4);
     setcolor(WHITE);
 
     for (int j = 0; j < size; j++)
     {
-        if (correctWords[j] != '-')
-        {
-            displayString[j] = correctWords[j];
-        }
-        else
-        {
-            displayString[j] = '-';
-        }
+         displayString[j] = correctWords[j];
     }
-
-    displayString[size] = '\0';
-    outtextxy(xCoordinate, 200, displayString);
+      
+	displayString[size] = '\0';
+    outtextxy(700, 200, displayString);
 }
 
 void guess(char questionHead[], char hint[], char guessWord[])
