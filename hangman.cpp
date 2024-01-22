@@ -1,12 +1,13 @@
 #include <graphics.h>
 #include <string.h>
+#include<conio.h>
 
 void secondGuess(void);
-void firstGuess(char[], char[], char[]);
+void guess(char[], char[], char[]);
 void hangman(int);
-void menu();
-void gameOverScreen();
-void displayGuessedCharacters(char[], int);
+void menu(void);
+void gameOverScreen(void);
+void displayGuessedCharacters(char[]);
 
 void hangman(int lives)
 {
@@ -94,7 +95,7 @@ void gameOverScreen()
 {
     char gameOver[50] = "GAME OVER!";
     char playAgain[100] = "Press Enter To play again";
-    char backToMenu[100] = "Press Esc Key to go back to menu";
+    char backToMenu[100] = "Press Esc to exist game!";
     setcolor(RED);
     settextstyle(10, HORIZ_DIR, 10);
     outtextxy(500, 100, gameOver);
@@ -106,37 +107,29 @@ void gameOverScreen()
     setcolor(WHITE);
     settextstyle(10, HORIZ_DIR, 3);
     outtextxy(520, 250, backToMenu);
-
-    if (getch() == 13)
+	char userInput = getch();
+    if (userInput == 13)
     {
         cleardevice();
-        menu();
+        guess("GUESS THE FIRST WORD", "Hint: It's a four leg animal", "DOG");
     }
 
-    if (getch() == 27)
+    if (userInput == 27)
     {
-        cleardevice();
-        menu();
+    	cleardevice();
+        closegraph();
     }
 }
 
-void displayGuessedCharacters(char correctWords[], int size)
+void displayGuessedCharacters(char correctWords[])
 {
-    char displayString[size+1]; //we plus 1 to actuall size to implement null character
 
     settextstyle(10, HORIZ_DIR, 4);
     setcolor(WHITE);
-
-    for (int j = 0; j < size; j++)
-    {
-         displayString[j] = correctWords[j];
-    }
-      
-	displayString[size] = '\0';
-    outtextxy(700, 200, displayString);
+    outtextxy(700, 200, correctWords);
 }
 
-void guess(char questionHead[], char hint[], char guessWord[])
+void guess(char questionHead[], char hint[], char guessWord[]) //take three input question,hint and word to be guess.
 {
     // For Question Text
     hangman(0);
@@ -149,41 +142,42 @@ void guess(char questionHead[], char hint[], char guessWord[])
     settextstyle(10, HORIZ_DIR, 2);
     outtextxy(650, 150, hint);
 
-    int lives = 0;
-    char userInput;
-    int guessWordLength = strlen(guessWord);
-    char tempWord[guessWordLength + 1];
+    int lives = 0; //initallize lives with 0
+    char userInput; // used for to take character of user and store in this variable
+    int guessWordLength = strlen(guessWord); //strlen() to get the length of string which is to be guess.
+    char tempWord[guessWordLength + 1]; // here we plus 1 to actuall size to implement null character for loop to know that string 1 is comleted
+    									//and we make tempWord[] to repalce each characters with dash 
 
     // Initialize tempWord with dashes
     for (int count = 0; count < guessWordLength; count++)
     {
         tempWord[count] = '-';
     }
-    tempWord[guessWordLength] = '\0'; // Null-terminate the string
+    tempWord[guessWordLength] = '\0'; // Null to terminate the string
 
-    while (1)
+    while (1) // infinite loop until it breaks
     {
-        userInput = getch();
-        int correctGuess = 0;
+        userInput = getch(); //get each characters from user
+        int correctGuess = 0; //initiallize var to 0 to know whether the guess character is right or not.
 
-        for (int i = 0; i < guessWordLength; i++)
+        for (int i = 0; i < guessWordLength; i++) //we run loop till the size of guess string or word.
         {
-            if (toupper(userInput) == guessWord[i])
+            if (toupper(userInput) == guessWord[i]) //toupper() make all the char enter by user to uppercase and match with the char of guessWord string.
             {
-                tempWord[i] = guessWord[i];
-                correctGuess = 1;
+                tempWord[i] = guessWord[i]; //if match we replace each dash with the correct character.
+                correctGuess = 1; //we initallize counter to 1 for each correct guess
             }
         }
 
-        displayGuessedCharacters(tempWord, guessWordLength);
+        displayGuessedCharacters(tempWord); // pass the correct string which is guess by user and its length as inputs.
 
-        if (correctGuess == 0)
+        if (correctGuess == 0) // if its 0 it means the guess char is wrong so he lost his one live
         {
             lives++;
             hangman(lives);
         }
 
-        // Check if the entire word is guessed
+        // Check if the entire word or string is guessed
         if (strcmp(guessWord, tempWord) == 0)
         {
             break;
@@ -198,41 +192,56 @@ void guess(char questionHead[], char hint[], char guessWord[])
     }
 }
 
-int main()
+main()
 {
     int gd = DETECT, gm;
     initgraph(&gd, &gm, (char *)"");
-
     initwindow(getmaxwidth(), getmaxheight());
 
     menu();
+    char userInput = getch();
 
-    if (getch() == 13)
+    if (userInput == 13)
     {
         cleardevice();
         hangman(0);
 
         // First Question
         guess("GUESS THE FIRST WORD", "Hint: It's a four leg animal", "DOG");
-        delay(1000);
+        delay(500);
         cleardevice();
 
         // Second Question
         guess("GUESS THE SECOND WORD", "Hint: It's an animal often used for riding", "HORSE");
-        delay(1000);
+        delay(500);
         cleardevice();
 
         // Third Question
         guess("GUESS THE THIRD WORD", "Hint: It's an object often used for drawing", "PENCIL");
-        delay(1000);
+        delay(500);
         cleardevice();
-
-        if (getch() == 27)
-        {
-            closegraph();
-        }
+        
+         // Fourth Question
+        guess("GUESS THE FOURTH WORD", "Hint: It's a fruit, Orange and juicy", "ORANGE");
+        delay(500);
+        cleardevice();
+        
+        // Fifth Question
+        guess("GUESS THE EIGHTH WORD", "Hint: It's a musical instrument with black and white keys", "PIANO");
+        delay(500);
+        cleardevice();
+        
     }
-
-    return 0;
+    
+    else if (userInput != 27)
+    {
+        menu();    
+	}
+    
+    else
+    {
+    	closegraph();
+      
+    }
 }
 
