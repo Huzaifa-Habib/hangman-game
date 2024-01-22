@@ -85,7 +85,7 @@ void menu()
     settextstyle(10, HORIZ_DIR, 3);
     outtextxy(520, 220, gameInstruction);
 
-    char gameInstruction1[50] = "Press ESC To Quit!";
+    char gameInstruction1[50] = "Press Any Key To Quit!";
     setcolor(WHITE);
     settextstyle(10, HORIZ_DIR, 3);
     outtextxy(520, 250, gameInstruction1);
@@ -95,7 +95,7 @@ void gameOverScreen()
 {
     char gameOver[50] = "GAME OVER!";
     char playAgain[100] = "Press Enter To play again";
-    char backToMenu[100] = "Press Esc to exist game!";
+    char backToMenu[100] = "Press Any Key to exist game!";
     setcolor(RED);
     settextstyle(10, HORIZ_DIR, 10);
     outtextxy(500, 100, gameOver);
@@ -114,11 +114,9 @@ void gameOverScreen()
         guess("GUESS THE FIRST WORD", "Hint: It's a four leg animal", "DOG");
     }
 
-    if (userInput == 27)
-    {
-    	cleardevice();
-        closegraph();
-    }
+    else{
+    	closegraph();
+	}
 }
 
 void displayGuessedCharacters(char correctWords[])
@@ -131,6 +129,21 @@ void displayGuessedCharacters(char correctWords[])
 
 void guess(char questionHead[], char hint[], char guessWord[]) //take three input question,hint and word to be guess.
 {
+	static int score = 0;
+	int lives = 0; //initallize lives with 0
+    char userInput,scoreStr[10];; // used for to take character of user and store in this variable
+    int guessWordLength = strlen(guessWord); //strlen() to get the length of string which is to be guess.
+    char tempWord[guessWordLength + 1]; // here we plus 1 to actuall size to implement null character for loop to know that string 1 is comleted
+    									//and we make tempWord[] to repalce each characters with dash 
+    									
+    sprintf(scoreStr, "%d", score); //for converting int to string
+    setcolor(YELLOW);
+    settextstyle(10, HORIZ_DIR, 3);
+    outtextxy(900, 10, "SCORE:");									
+	outtextxy(990, 10, scoreStr);									
+	
+
+	
     // For Question Text
     hangman(0);
     setcolor(BLUE);
@@ -142,11 +155,6 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
     settextstyle(10, HORIZ_DIR, 2);
     outtextxy(650, 150, hint);
 
-    int lives = 0; //initallize lives with 0
-    char userInput; // used for to take character of user and store in this variable
-    int guessWordLength = strlen(guessWord); //strlen() to get the length of string which is to be guess.
-    char tempWord[guessWordLength + 1]; // here we plus 1 to actuall size to implement null character for loop to know that string 1 is comleted
-    									//and we make tempWord[] to repalce each characters with dash 
 
     // Initialize tempWord with dashes
     for (int count = 0; count < guessWordLength; count++)
@@ -169,7 +177,7 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
             }
         }
 
-        displayGuessedCharacters(tempWord); // pass the correct string which is guess by user and its length as inputs.
+        displayGuessedCharacters(tempWord); // pass the correct string which is guess by user
 
         if (correctGuess == 0) // if its 0 it means the guess char is wrong so he lost his one live
         {
@@ -180,11 +188,13 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
         // Check if the entire word or string is guessed
         if (strcmp(guessWord, tempWord) == 0)
         {
+        	score+=1;
             break;
         }
 
         if (lives >= 7)
         {
+        	delay(300);
             cleardevice();
             gameOverScreen();
             break;
@@ -227,16 +237,11 @@ main()
         cleardevice();
         
         // Fifth Question
-        guess("GUESS THE EIGHTH WORD", "Hint: It's a musical instrument with black and white keys", "PIANO");
+        guess("GUESS THE FIFTH WORD", "Hint: It's a musical instrument with black and white keys", "PIANO");
         delay(500);
         cleardevice();
         
     }
-    
-    else if (userInput != 27)
-    {
-        menu();    
-	}
     
     else
     {
