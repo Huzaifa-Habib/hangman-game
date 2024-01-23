@@ -7,7 +7,57 @@ void guess(char[], char[], char[]);
 void hangman(int);
 void menu(void);
 void gameOverScreen(void);
+void congratulation(void);
 void displayGuessedCharacters(char[]);
+
+main()
+{
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char *)"");
+    initwindow(getmaxwidth(), getmaxheight());
+
+	char userInput = getch();
+	
+    menu();
+
+    if (userInput == 13) //The game only starts if user press enter key.
+    {
+        cleardevice();
+        hangman(0);
+
+        // First Question
+        guess("GUESS THE FIRST WORD", "Hint: It's a four leg animal often used as pet", "DOG");
+        delay(500);
+        cleardevice();
+
+        // Second Question
+        guess("GUESS THE SECOND WORD", "Hint: It's an animal often used for riding", "HORSE");
+        delay(500);
+        cleardevice();
+
+        // Third Question
+        guess("GUESS THE THIRD WORD", "Hint: It's an object often used for drawing", "PENCIL");
+        delay(500);
+        cleardevice();
+        
+         // Fourth Question
+        guess("GUESS THE FOURTH WORD", "Hint: It's a fruit, Orange and juicy", "ORANGE");
+        delay(500);
+        cleardevice();
+        
+        // Fifth Question
+        guess("GUESS THE FIFTH WORD", "Hint: It's a musical instrument with black and white keys", "PIANO");
+        delay(500);
+        cleardevice();
+        
+    }
+    
+    else
+    {
+    	closegraph();
+      
+    }
+}
 
 void hangman(int lives)
 {
@@ -115,7 +165,7 @@ void menu()
     setcolor(WHITE);
     settextstyle(10, HORIZ_DIR, 3);
     outtextxy(520, 480, member3);
-    outtextxy(750, 480, roll2);
+    outtextxy(750, 480, roll3);
 
 }
 
@@ -147,6 +197,35 @@ void gameOverScreen()
     	closegraph();
 	}
 }
+
+void congratulation()
+{
+    char congt[50] = "CONGRATULATION!";
+    char playAgain[100] = "Press Enter To play again";
+    char backToMenu[100] = "Press Any Key to exist game!";
+    setcolor(RED);
+    settextstyle(10, HORIZ_DIR, 8);
+    outtextxy(450, 100, congt);
+
+    setcolor(WHITE);
+    settextstyle(10, HORIZ_DIR, 3);
+    outtextxy(520, 220, playAgain);
+
+    setcolor(WHITE);
+    settextstyle(10, HORIZ_DIR, 3);
+    outtextxy(520, 250, backToMenu);
+	char userInput = getch();
+    if (userInput == 13) //If he want to play again take him back to first question again.
+    {
+        cleardevice();
+        guess("GUESS THE FIRST WORD", "Hint: It's a four leg animal", "DOG");
+    }
+
+    else{
+    	closegraph();
+	}
+}
+
 
 
 //This function used to display the correct stirng which user will guess
@@ -224,9 +303,18 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
         if (strcmp(guessWord, tempWord) == 0)
         {
         	score+=1;
+         	if(score == 5)
+       		{
+       			delay(300);
+       	 		cleardevice();
+        		congratulation();
+        		break;
+			}
+
             break;
         }
-
+        
+   
         if (lives >= 7)
         {
             score =0;
@@ -237,52 +325,3 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
         }
     }
 }
-
-main()
-{
-    int gd = DETECT, gm;
-    initgraph(&gd, &gm, (char *)"");
-    initwindow(getmaxwidth(), getmaxheight());
-
-    menu();
-    char userInput = getch();
-
-    if (userInput == 13) //The game only starts if user press enter key.
-    {
-        cleardevice();
-        hangman(0);
-
-        // First Question
-        guess("GUESS THE FIRST WORD", "Hint: It's a four leg animal often used as pet", "DOG");
-        delay(500);
-        cleardevice();
-
-        // Second Question
-        guess("GUESS THE SECOND WORD", "Hint: It's an animal often used for riding", "HORSE");
-        delay(500);
-        cleardevice();
-
-        // Third Question
-        guess("GUESS THE THIRD WORD", "Hint: It's an object often used for drawing", "PENCIL");
-        delay(500);
-        cleardevice();
-        
-         // Fourth Question
-        guess("GUESS THE FOURTH WORD", "Hint: It's a fruit, Orange and juicy", "ORANGE");
-        delay(500);
-        cleardevice();
-        
-        // Fifth Question
-        guess("GUESS THE FIFTH WORD", "Hint: It's a musical instrument with black and white keys", "PIANO");
-        delay(500);
-        cleardevice();
-        
-    }
-    
-    else
-    {
-    	closegraph();
-      
-    }
-}
-
