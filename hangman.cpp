@@ -11,15 +11,15 @@ void displayGuessedCharacters(char[]);
 
 void hangman(int lives)
 {
-    // Base
+    // stand
     setcolor(WHITE);
     line(100, 400, 500, 400);
 
-    // Vertical pole
+    // Vertical Line
     setcolor(WHITE);
     line(300, 400, 300, 100);
 
-    // Horizontal beam
+    // Horizontal Line
     setcolor(WHITE);
     line(300, 100, 400, 100);
 
@@ -73,6 +73,7 @@ void hangman(int lives)
     }
 }
 
+//Menu function which will appear everytime the game starts
 void menu()
 {
     char gameName[50] = "HANGMAN";
@@ -89,8 +90,36 @@ void menu()
     setcolor(WHITE);
     settextstyle(10, HORIZ_DIR, 3);
     outtextxy(520, 250, gameInstruction1);
+    
+    char groupMemberHead[50] = "GROUP MEMBERS:";
+    setcolor(WHITE);
+    settextstyle(10, HORIZ_DIR, 5);
+    outtextxy(520, 350, groupMemberHead);
+    
+    char member1[50] = "Huzaifa Habib:";
+    char roll1[50] = "2023F-BCNS-047";
+    setcolor(WHITE);
+    settextstyle(10, HORIZ_DIR, 3);
+    outtextxy(520, 400, member1);
+    outtextxy(750, 400, roll1);
+    
+    char member2[50] = "Mohid Akram:";
+    char roll2[50] = "2023F-BCNS-077";
+    setcolor(WHITE);
+    settextstyle(10, HORIZ_DIR, 3);
+    outtextxy(520, 440, member2);
+    outtextxy(750, 440, roll2);
+    
+	char member3[50] = "Syed Mohsin:";
+    char roll3[50] = "2023F-BCNS-098";
+    setcolor(WHITE);
+    settextstyle(10, HORIZ_DIR, 3);
+    outtextxy(520, 480, member3);
+    outtextxy(750, 480, roll2);
+
 }
 
+//Game over screen function which will show everytime the user fails to guess
 void gameOverScreen()
 {
     char gameOver[50] = "GAME OVER!";
@@ -108,7 +137,7 @@ void gameOverScreen()
     settextstyle(10, HORIZ_DIR, 3);
     outtextxy(520, 250, backToMenu);
 	char userInput = getch();
-    if (userInput == 13)
+    if (userInput == 13) //If he want to play again take him back to first question again.
     {
         cleardevice();
         guess("GUESS THE FIRST WORD", "Hint: It's a four leg animal", "DOG");
@@ -119,6 +148,8 @@ void gameOverScreen()
 	}
 }
 
+
+//This function used to display the correct stirng which user will guess
 void displayGuessedCharacters(char correctWords[])
 {
 
@@ -127,11 +158,12 @@ void displayGuessedCharacters(char correctWords[])
     outtextxy(700, 200, correctWords);
 }
 
+//This is the main function which takes userInput and match it with ro be guess string 
 void guess(char questionHead[], char hint[], char guessWord[]) //take three input question,hint and word to be guess.
 {
-	static int score = 0;
+	static int score = 0; //Static variables have the property of preserving their value even after they are out of their scope. 
 	int lives = 0; //initallize lives with 0
-    char userInput,scoreStr[10];; // used for to take character of user and store in this variable
+    char userInput,scoreStr[10]; // used for to take character of user and store in this variable
     int guessWordLength = strlen(guessWord); //strlen() to get the length of string which is to be guess.
     char tempWord[guessWordLength + 1]; // here we plus 1 to actuall size to implement null character for loop to know that string 1 is comleted
     									//and we make tempWord[] to repalce each characters with dash 
@@ -140,7 +172,9 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
     setcolor(YELLOW);
     settextstyle(10, HORIZ_DIR, 3);
     outtextxy(900, 10, "SCORE:");									
-	outtextxy(990, 10, scoreStr);									
+	outtextxy(990, 10, scoreStr);	
+
+								
 	
 
 	
@@ -157,7 +191,7 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
 
 
     // Initialize tempWord with dashes
-    for (int count = 0; count < guessWordLength; count++)
+    for (int count = 0; count < guessWordLength; count++) //The loop runs till the length of orginal string which is to be guess
     {
         tempWord[count] = '-';
     }
@@ -175,6 +209,7 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
                 tempWord[i] = guessWord[i]; //if match we replace each dash with the correct character.
                 correctGuess = 1; //we initallize counter to 1 for each correct guess
             }
+            
         }
 
         displayGuessedCharacters(tempWord); // pass the correct string which is guess by user
@@ -194,6 +229,7 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
 
         if (lives >= 7)
         {
+            score =0;
         	delay(300);
             cleardevice();
             gameOverScreen();
@@ -211,13 +247,13 @@ main()
     menu();
     char userInput = getch();
 
-    if (userInput == 13)
+    if (userInput == 13) //The game only starts if user press enter key.
     {
         cleardevice();
         hangman(0);
 
         // First Question
-        guess("GUESS THE FIRST WORD", "Hint: It's a four leg animal", "DOG");
+        guess("GUESS THE FIRST WORD", "Hint: It's a four leg animal often used as pet", "DOG");
         delay(500);
         cleardevice();
 
