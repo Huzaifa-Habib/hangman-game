@@ -15,10 +15,10 @@ main()
     int gd = DETECT, gm;
     initgraph(&gd, &gm, (char *)"");
     initwindow(getmaxwidth(), getmaxheight());
+    menu();
 
 	char userInput = getch();
 	
-    menu();
 
     if (userInput == 13) //The game only starts if user press enter key.
     {
@@ -253,10 +253,6 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
     outtextxy(900, 10, "SCORE:");									
 	outtextxy(990, 10, scoreStr);	
 
-								
-	
-
-	
     // For Question Text
     hangman(0);
     setcolor(BLUE);
@@ -270,7 +266,7 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
 
 
     // Initialize tempWord with dashes
-    for (int count = 0; count < guessWordLength; count++) //The loop runs till the length of orginal string which is to be guess
+    for (int count = 0; count < guessWordLength; count++) //The loop runs till the length - 1 of orginal string which is to be guess
     {
         tempWord[count] = '-';
     }
@@ -305,6 +301,7 @@ void guess(char questionHead[], char hint[], char guessWord[]) //take three inpu
         	score+=1;
          	if(score == 5)
        		{
+       			score = 0;
        			delay(300);
        	 		cleardevice();
         		congratulation();
